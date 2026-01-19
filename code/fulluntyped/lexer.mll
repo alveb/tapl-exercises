@@ -1,9 +1,9 @@
-(* 
+(*
    The lexical analyzer: lexer.ml is generated automatically
    from lexer.mll.
-   
-   The only modification commonly needed here is adding new keywords to the 
-   list of reserved words at the top.  
+
+   The only modification commonly needed here is adding new keywords to the
+   list of reserved words at the top.
 *)
 
 {
@@ -24,7 +24,7 @@ let reservedWords = [
   ("pred", fun i -> Parser.PRED i);
   ("iszero", fun i -> Parser.ISZERO i);
   ("timesfloat", fun i -> Parser.TIMESFLOAT i);
-  
+
   (* Symbols *)
   ("_", fun i -> Parser.USCORE i);
   ("'", fun i -> Parser.APOSTROPHE i);
@@ -42,13 +42,13 @@ let reservedWords = [
   ("::", fun i -> Parser.COLONCOLON i);
   ("=", fun i -> Parser.EQ i);
   ("==", fun i -> Parser.EQEQ i);
-  ("[", fun i -> Parser.LSQUARE i); 
+  ("[", fun i -> Parser.LSQUARE i);
   ("<", fun i -> Parser.LT i);
-  ("{", fun i -> Parser.LCURLY i); 
-  ("(", fun i -> Parser.LPAREN i); 
-  ("<-", fun i -> Parser.LEFTARROW i); 
-  ("{|", fun i -> Parser.LCURLYBAR i); 
-  ("[|", fun i -> Parser.LSQUAREBAR i); 
+  ("{", fun i -> Parser.LCURLY i);
+  ("(", fun i -> Parser.LPAREN i);
+  ("<-", fun i -> Parser.LEFTARROW i);
+  ("{|", fun i -> Parser.LCURLYBAR i);
+  ("[|", fun i -> Parser.LSQUAREBAR i);
   ("}", fun i -> Parser.RCURLY i);
   (")", fun i -> Parser.RPAREN i);
   ("]", fun i -> Parser.RSQUARE i);
@@ -76,7 +76,7 @@ let createID i str =
   with _ ->
     if (String.get str 0) >= 'A' && (String.get str 0) <= 'Z' then
        Parser.UCID {i=i;v=str}
-    else 
+    else
        Parser.LCID {i=i;v=str}
 
 let lineno   = ref 1

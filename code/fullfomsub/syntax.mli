@@ -4,7 +4,7 @@ open Support.Pervasive
 open Support.Error
 
 (* Data type definitions *)
-type kind = 
+type kind =
     KnStar
   | KnArr of kind * kind
 
@@ -51,7 +51,7 @@ type term =
   | TmFix of info * term
 
 type binding =
-    NameBind 
+    NameBind
   | VarBind of ty
   | TyVarBind of ty
   | TyAbbBind of ty * (kind option)
@@ -65,7 +65,7 @@ type command =
 
 (* Contexts *)
 type context
-val emptycontext : context 
+val emptycontext : context
 val ctxlength : context -> int
 val addbinding : context -> string -> binding -> context
 val addname: context -> string -> context

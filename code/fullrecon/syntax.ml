@@ -25,7 +25,7 @@ type term =
   | TmLet of info * string * term * term
 
 type binding =
-    NameBind 
+    NameBind
   | VarBind of ty
 
 type context = (string * binding) list
@@ -76,7 +76,7 @@ let rec name2index fi ctx x =
 (* ---------------------------------------------------------------------- *)
 (* Shifting *)
 
-let tmmap onvar c t = 
+let tmmap onvar c t =
   let rec walk c t = match t with
     TmVar(fi,x,n) -> onvar fi c x n
   | TmAbs(fi,x,tyT1,t2) -> TmAbs(fi,x,tyT1,walk (c+1) t2)
@@ -106,7 +106,7 @@ let termSubst j s t =
     (fun fi j x n -> if x=j then termShift j s else TmVar(fi,x,n))
     j t
 
-let termSubstTop s t = 
+let termSubstTop s t =
   termShift (-1) (termSubst 0 (termShift 1 s) t)
 
 (* ---------------------------------------------------------------------- *)
@@ -115,7 +115,7 @@ let termSubstTop s t =
 let rec getbinding fi ctx i =
   try
     let (_,bind) = List.nth ctx i in
-    bind 
+    bind
   with Failure _ ->
     let msg =
       Printf.sprintf "Variable lookup failure: offset: %d, ctx size: %d" in
@@ -123,9 +123,9 @@ let rec getbinding fi ctx i =
  let getTypeFromContext fi ctx i =
    match getbinding fi ctx i with
        VarBind(tyT) -> tyT
-     | _ -> error fi 
-       ("getTypeFromContext: Wrong kind of binding for variable " 
-        ^ (index2name fi ctx i)) 
+     | _ -> error fi
+       ("getTypeFromContext: Wrong kind of binding for variable "
+        ^ (index2name fi ctx i))
 (* ---------------------------------------------------------------------- *)
 (* Extracting file info *)
 
@@ -140,7 +140,7 @@ let tmInfo t = match t with
   | TmSucc(fi,_) -> fi
   | TmPred(fi,_) -> fi
   | TmIsZero(fi,_) -> fi
-  | TmLet(fi,_,_,_) -> fi 
+  | TmLet(fi,_,_,_) -> fi
 
 (* ---------------------------------------------------------------------- *)
 (* Printing *)
@@ -155,7 +155,7 @@ let tmInfo t = match t with
      break  Insert a breakpoint indicating where the line maybe broken if
             necessary.
   See the documentation for the Format module in the OCaml library for
-  more details. 
+  more details.
 *)
 
 let obox0() = open_hvbox 0
@@ -163,7 +163,7 @@ let obox() = open_hvbox 2
 let cbox() = close_box()
 let break() = print_break 0 0
 
-let small t = 
+let small t =
   match t with
     TmVar(_,_,_) -> true
   | _ -> false
@@ -171,9 +171,9 @@ let small t =
 let rec printty_Type outer tyT = match tyT with
       tyT -> printty_ArrowType outer tyT
 
-and printty_ArrowType outer  tyT = match tyT with 
+and printty_ArrowType outer  tyT = match tyT with
     TyArr(tyT1,tyT2) ->
-      obox0(); 
+      obox0();
       printty_AType false tyT1;
       if outer then pr " ";
       pr "->";
@@ -188,7 +188,7 @@ and printty_AType outer tyT = match tyT with
   | TyNat -> pr "Nat"
   | tyT -> pr "("; printty_Type outer tyT; pr ")"
 
-let printty tyT = printty_Type true tyT 
+let printty tyT = printty_Type true tyT
 
 let rec printtm_Term outer ctx t = match t with
     TmAbs(fi,x,Some(tyT1),t2) ->
@@ -211,7 +211,7 @@ let rec printtm_Term outer ctx t = match t with
        cbox()
   | TmLet(fi, x, t1, t2) ->
        obox0();
-       pr "let "; pr x; pr " = "; 
+       pr "let "; pr x; pr " = ";
        printtm_Term false ctx t1;
        print_space(); pr "in"; print_space();
        printtm_Term false (addname ctx x) t2;
@@ -259,10 +259,10 @@ and printtm_ATerm outer ctx t = match t with
      in f 1 t1
   | t -> pr "("; printtm_Term outer ctx t; pr ")"
 
-let printtm ctx t = printtm_Term true ctx t 
+let printtm ctx t = printtm_Term true ctx t
 
 let prbinding ctx b = match b with
     NameBind -> ()
-  | VarBind(tyT) -> pr ": "; printty tyT 
+  | VarBind(tyT) -> pr ": "; printty tyT
 
 

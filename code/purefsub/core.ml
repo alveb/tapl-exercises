@@ -26,7 +26,7 @@ let rec eval1 ctx t = match t with
   | TmTApp(fi,t1,tyT2) ->
       let t1' = eval1 ctx t1 in
       TmTApp(fi, t1', tyT2)
-  | _ -> 
+  | _ ->
       raise NoRuleApplies
 
 let rec eval ctx t =
@@ -46,7 +46,7 @@ let promote ctx t = match t with
 let rec subtype ctx tyS tyT =
    (=) tyS tyT ||
    match (tyS,tyT) with
-     (_,TyTop) -> 
+     (_,TyTop) ->
        true
    | (TyArr(tyS1,tyS2),TyArr(tyT1,tyT2)) ->
        (subtype ctx tyT1 tyS1) && (subtype ctx tyS2 tyT2)
@@ -55,7 +55,7 @@ let rec subtype ctx tyS tyT =
         (subtype ctx tyS1 tyT1 && subtype ctx tyT1 tyS1) &&
         let ctx1 = addbinding ctx tyX1 (TyVarBind(tyT1)) in
         subtype ctx1 tyS2 tyT2
-   | (_,_) -> 
+   | (_,_) ->
        false
 
 (* ------------------------   TYPING  ------------------------ *)

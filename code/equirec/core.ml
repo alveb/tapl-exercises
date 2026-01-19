@@ -20,7 +20,7 @@ let rec eval1 ctx t = match t with
   | TmApp(fi,t1,t2) ->
       let t1' = eval1 ctx t1 in
       TmApp(fi, t1', t2)
-  | _ -> 
+  | _ ->
       raise NoRuleApplies
 
 let rec eval ctx t =
@@ -35,11 +35,11 @@ let rec computety ctx tyT = match tyT with
 let rec simplifyty ctx tyT =
   try
     let tyT' = computety ctx tyT in
-    simplifyty ctx tyT' 
+    simplifyty ctx tyT'
   with NoRuleApplies -> tyT
 
 let rec tyeqv seen ctx tyS tyT =
-  List.mem (tyS,tyT) seen 
+  List.mem (tyS,tyT) seen
   || match (tyS,tyT) with
         (TyId(b1),TyId(b2)) -> b1=b2
      | (TyRec(x,tyS1),_) ->

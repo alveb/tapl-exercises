@@ -30,7 +30,7 @@ let rec eval1 ctx t = match t with
   | TmApp(fi,t1,t2) ->
       let t1' = eval1 ctx t1 in
       TmApp(fi, t1', t2)
-  | _ -> 
+  | _ ->
       raise NoRuleApplies
 
 let rec eval ctx t =
@@ -44,9 +44,9 @@ let rec typeof ctx t =
   match t with
     TmVar(fi,i,_) -> getTypeFromContext fi ctx i
   | (* Insert case(s) for TmLet here *) _ -> assert false
-  | TmTrue(fi) -> 
+  | TmTrue(fi) ->
       TyBool
-  | TmFalse(fi) -> 
+  | TmFalse(fi) ->
       TyBool
   | TmIf(fi,t1,t2,t3) ->
      if (=) (typeof ctx t1) TyBool then

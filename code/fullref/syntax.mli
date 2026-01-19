@@ -30,7 +30,7 @@ type term =
   | TmUnit of info
   | TmLoc of info * int
   | TmRef of info * term
-  | TmDeref of info * term 
+  | TmDeref of info * term
   | TmAssign of info * term * term
   | TmCase of info * term * (string * (string * term)) list
   | TmTag of info * string * term * ty
@@ -50,7 +50,7 @@ type term =
   | TmInert of info * ty
 
 type binding =
-    NameBind 
+    NameBind
   | VarBind of ty
   | TmAbbBind of term * (ty option)
   | TyVarBind
@@ -63,7 +63,7 @@ type command =
 
 (* Contexts *)
 type context
-val emptycontext : context 
+val emptycontext : context
 val ctxlength : context -> int
 val addbinding : context -> string -> binding -> context
 val addname: context -> string -> context
