@@ -1,0 +1,8 @@
+exercises/exercises.aux
+exercises/exercises.log
+exercises/exercises.pdf
+code/**/*.cmi
+code/**/*.cmo
+code/**/*.output
+code/**/.depend
+code/**/f
