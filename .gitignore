@@ -6,3 +6,4 @@ code/**/*.cmo
 code/**/*.output
 code/**/.depend
 code/**/f
+code/snippets/*

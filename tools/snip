@@ -1,0 +1,21 @@
+#!/usr/bin/awk -f
+
+BEGIN {
+  dir = "/home/albj/tapl/code/snippets/"
+}
+
+/begin snippet/ {
+  name = $4
+  in_snippet = 1
+  print "Snipping " name
+  next
+}
+/end snippet/ {
+  in_snippet = 0
+}
+in_snippet {
+  gsub(/->/, "→", $0)
+  gsub(/lambda /, "λ", $0)
+  ext = substr(FILENAME, index(FILENAME, "."))
+  print >dir name ext
+}
