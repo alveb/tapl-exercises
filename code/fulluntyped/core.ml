@@ -93,10 +93,16 @@ let rec eval1 ctx t = match t with
   | _ ->
       raise NoRuleApplies
 
-let rec eval ctx t =
-  try let t' = eval1 ctx t
-      in eval ctx t'
-  with NoRuleApplies -> t
+let eval ctx t =
+  let t = ref t and i = ref 0 in
+  try while true do
+    t := eval1 ctx !t;
+    i := !i + 1
+  done
+  with NoRuleApplies -> ();
+  print_int !i;
+  print_char ' ';
+  !t
 
 let evalbinding ctx b = match b with
     TmAbbBind(t) ->
