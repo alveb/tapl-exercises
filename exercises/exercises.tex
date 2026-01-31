@@ -1,32 +1,37 @@
-\documentclass{article}
+\documentclass[draft]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{newunicodechar}
 \usepackage{stickstootext}
 \usepackage[stix2,vvarbb]{newtxmath}
 \usepackage{bussproofs}
+\usepackage{fancyvrb}
+\usepackage{stackrel}
+\usepackage{graphicx}
 
 \newunicodechar{⊆}{\subseteq}
 \newunicodechar{∊}{\in}
 \newunicodechar{∪}{\cup}
+\newunicodechar{∩}{\cap}
 \newunicodechar{⇒}{\Rightarrow}
-\newunicodechar{×}{\times}
 \newunicodechar{≤}{\leq}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{⟨}{\langle}
+\newunicodechar{⟩}{\rangle}
+\newunicodechar{≠}{\neq}
+\newunicodechar{⇓}{\Downarrow}
 
-\newcommand{\tf}[1]{\texttt{#1}}
-\newcommand{\tc}[1]{\mathcal{#1}}
-\newcommand{\R}{\mathbin R}
-\newcommand{\true}{\texttt{true}}
-\newcommand{\false}{\texttt{false}}
-\newcommand{\iszero}{\mathop\texttt{iszero}}
-\newcommand{\xsucc}{\mathop\texttt{succ}}
-\newcommand{\pred}{\mathop\texttt{pred}}
-\newcommand{\xif}[3]{\texttt{if}\,#1\texttt{then}\,#2\,\texttt{else}\,#3}
+\newcommand{\tm}{\texttt}
+\newcommand{\lra}{\longrightarrow}
+
+\frenchspacing
 
 \begin{document}
+\section*{Chapter 2}
 \begin{itemize}
-\item[2.2.6] It is clear that $R'$ is reflexive. Suppose $R''$ is
-some other reflexive relation containing $R$, which is to say
-$(s, s) ∊ R''$ for all $s ∊ S$ and $R ⊆ R''$. Hence
+\item[2.2.6] It is clear that $R'$ is reflexive.
+Suppose $R''$ is some other reflexive relation containing $R$,
+which is to say $(s, s) ∊ R''$ for all $s ∊ S$ and $R ⊆ R''$.
+Hence
 \begin{equation*}
 R' = R ∪ \{(s, s) \mid s ∊ S\} ⊆ R'',
 \end{equation*}
@@ -36,103 +41,390 @@ so $R'$ is smallest.
 \begin{equation}\label{eq:227}
 n ≤ m ⇒ R_n ⊆ R_m.
 \end{equation}
-(We leave it as an unproven fact that for any sequence $s$, the
-two propositions `$s_n ≤ s_{n + 1}$ for all $n$' and `$s_n ≤ s_m$
-for all $n ≤ m$' are equivalent.)
+(We leave it as an unproven fact that for any sequence $s$,
+the two propositions `$s_n ≤ s_{n + 1}$ for all $n$' and
+`$s_n ≤ s_m$ for all $n ≤ m$' are equivalent.)
 
-Suppose $s \R^+ t$ and $t \R^+ u$. Since $R^+$ is a union,
-there must be $m, n$ such that $s \R_m t$ and $t \R_n u$.
-From (\ref{eq:227}) it follows that $s \R_{\max \{m, n\}} t$ and
-$t \R_{\max \{m, n\}} u$, so by construction
-$s \R_{\max \{m, n\} + 1} u$, which implies $s \R^+ u$. Hence
-$R^+$ is transitive.
+Suppose $s \mathbin R^+ t$ and $t \mathbin R^+ u$.
+Since $R^+$ is a union, there must be $m, n$ such that
+$s \mathbin R_m t$ and $t \mathbin R_n u$.
+From (\ref{eq:227}) it follows that
+$s \mathbin R_{\max \{m, n\}} t$ and
+$t \mathbin R_{\max \{m, n\}} u$, so by construction
+$s \mathbin R_{\max \{m, n\} + 1} u$,
+which implies $s \mathbin R^+ u$.
+Hence $R^+$ is transitive.
 
 Suppose $R''$ is some other transitive relation containing $R$.
-Thus $R_0 = R ⊆ R''$, and $R_n ⊆ R'' ⇒ R_{n+1} ⊆ R''$ since $R''$
-is transitive, so $R_n ⊆ R''$ for all $n$. Hence $R^+ ⊆ R''$, so
-$R^+$ is smallest.
+Thus $R_0 = R ⊆ R''$, and
+$R_n ⊆ R'' ⇒ R_{n+1} ⊆ R''$ since $R''$ is transitive,
+so $R_n ⊆ R''$ for all $n$.
+Hence $R^+ ⊆ R''$, so $R^+$ is smallest.
 
-\item[2.2.8] Suppose $P$ is preserved by $R$. Since
-$P\,s ⇒ P\,s$, adding $(s, s)$ to $R$ can never invalidate the
-preservation of $P$ by $R$. In a similar fashion, if
-$P\,s$, $s \R t$, and $t \R u$, then $P\,t$ and so $P\,u$ by the
-preservation of $P$ by $R$, so adding $(s, u)$ to $R$ can do no
-harm. In conclusion, $P$ is preserved by $R^*$.
+\item[2.2.8] Suppose $P$ is preserved by $R$.
+Since $P(s) ⇒ P(s)$,
+adding $(s, s)$ to $R$ can never invalidate the preservation of
+$P$ by $R$.
+In a similar fashion,
+if $P(s)$, $s \mathbin R t$, and
+$t \mathbin R u$,
+then $P(t)$ and so $P(u$)by the
+preservation of $P$ by $R$,
+so adding $(s, u)$ to $R$ can do no harm.
+In conclusion, $P$ is preserved by $R^*$.
+\end{itemize}
+\pagebreak
 
-\item[3.2.4] Let $n_i$ be the size of $S_i$. Then $n_0 = 0$ and
-$n_{i + 1} = 3 + 3 n_i + n_i^3$, so $n_3 = 59~439$.
+\section*{Chapter 3}
+\begin{itemize}
+\item[3.2.4] Let $n_i$ be the size of $S_i$.
+Then $n_0 = 0$ and $n_{i + 1} = 3 + 3 n_i + n_i^3$,
+so $n_3 = 59~439$.
 
-\item[3.2.5] Let $F$ be the construction such that $S_{i + 1} =
-F(S_i)$. We show that $F$ is monotone w.r.t.\ inclusion, i.e.
+\item[3.2.5] Let $F$ be the construction such that
+$S_{i + 1} = F(S_i)$.
+We show that $F$ is monotone with respect to inclusion, i.e.
 \begin{equation}\label{eq:325}
 A ⊆ B ⇒ F(A) ⊆ F(B).
 \end{equation}
-Suppose $A ⊆ B$ and $t ∊ F(A)$. Then either
+Suppose $A ⊆ B$ and $t ∊ F(A)$.
+Then either
 \begin{itemize}
-\item $\tf t ∊ \{\true, \false, \tf 0\}$,
-in which case $\tf t ∊ F(B)$, or
-\item $\tf t ∊ \{\xsucc \tf t_1, \pred \tf t_1,
-\iszero \tf t_1\}$ for some $t_1 ∊ A$,
-in which case $t_1 ∊ B$, so $t ∊ F(B)$, or
-\item $\tf t = \xif{\tf t_1}{\tf t_2}{\tf t_3}$ for
-$\{\tf t_1, \tf t_2, \tf t_3\} ⊆ A$,
-in which case $\{t_1, t_2, t_3\} ⊆ B$, so $t ∊ F(B)$.
+\item $\tm t ∊ \{\tm{true}, \tm{false}, \tm 0\}$,
+in which case $\tm t ∊ F(B)$, or
+\item $\tm t ∊ \{\tm{succ $\tm t_1$}, \tm{pred $\tm t_1$},
+\tm{iszero $\tm t_1$}\}$ for some $\tm t_1 ∊ A$,
+in which case $\tm t_1 ∊ B$,
+so $\tm t ∊ F(B)$, or
+\item $\tm t = \tm{if $\tm t_1$ then $\tm t_2$\,else $\tm t_3$}$
+for $\{\tm t_1, \tm t_2, \tm t_3\} ⊆ A$,
+in which case \\
+$\{\tm t_1, \tm t_2, \tm t_3\} ⊆ B$,
+so $t ∊ F(B)$.
 \end{itemize}
 Hence $F(A) ⊆ F(B)$.
 
-We can now see that $S$ is cumulative, since $S_0 ⊆ S_1$ and also
-$S_i ⊆ S_{i + 1} ⇒ S_{i + 1} ⊆ S_{i + 2}$, where the first fact
-follows from $S_0$ being the empty set, and the second fact is a
-substitution instance of (\ref{eq:325}).
+We can now see that $S$ is cumulative,
+since $S_0 ⊆ S_1$ and also
+$S_i ⊆ S_{i + 1} ⇒ S_{i + 1} ⊆ S_{i + 2}$,
+where the first fact follows from $S_0$ being the empty set,
+and the second fact is a substitution instance of (\ref{eq:325}).
 
 \item[3.3.4] Let $\bar P$ be the extension of the property $P$,
-i.e.\ $\bar P = \{\tf s \in \tc T \mid P(\tf s)\} ⊆ \tc T$. The
-premises of structural induction assert that $\bar P$ satisifies
-conditions 1--3 in definition 3.2.1, and since $\tc T$ is the
-smallest such set, $\tc T ⊆ \bar P$. Thus $\bar P = \tc T$ and so
-$P(\tf s)$ for all $\tf s ∊ \tc T$, which was to be shown.
+i.e.\ $\bar P =
+\{\tm s ∊ \mathcal T \mid P(\tm s)\} ⊆ \mathcal T$.
+The premise of structural induction assert that $\bar P$
+satisfies conditions 1--3 in definition 3.2.1,
+and since $\mathcal T$ is the smallest such set,
+$\mathcal T ⊆ \bar P$. Thus $\bar P = \mathcal T$,
+so $P(\tm s)$ for all $\tm s ∊ \mathcal T$,
+which is the conclusion of structural induction.
 
-Note that, by definition, all terms in $\tc T$ have a strictly
-larger both depth and size than any of its (immediate) subterms,
-so the premises of induction by on depth and size imply the
-premises for structural induction, and the conclusion follows.
+For induction on depth or size we argue as follows.
+Let $f$ be either \textsl{depth} or \textsl{size}.
+Note that the inverse image of $f$ partitions $\mathcal T$,
+i.e.\ if we let $F_i = \{\tm s ∊ \mathcal T \mid f(\tm s) = i\}$
+then $\bigcup_i F_i = \mathcal T$ and
+$F_i ∩ F_j = \varnothing$ whenever $i ≠ j$.
+The premise of induction on depth or size may then be
+reformulated thusly:
+if $F_i ⊆ \bar P$ for every $i < j$,
+then $F_j ⊆ \bar P$.
+By strong induction on $\mathbb N$,
+we can conclude that $F_i ⊆ \bar P$ for all $i$,
+so $\mathcal T ⊆ \bar P$.
 
-(Another way to validate induction on depth would be to prove
-that $\{\tf s ∊ \tc T \mid \textsl{depth}(s) < i\} = S_i$, and go
-from there.)
+(As a side note, $F_i = S_i$ when $f = \textsl{depth}$.)
 
 \item[3.5.5] Structural induction.
 
 \item[3.5.10]
 \begin{equation*}
-\AxiomC{$\tf t \longrightarrow \tf t'$}
-\UnaryInfC{$\tf t \longrightarrow^* \tf t'$}
+\AxiomC{$\tm t \lra \tm t'$}
+\UnaryInfC{$\tm t \lra^* \tm t'$}
 \DisplayProof
 \qquad
 \AxiomC{}
-\UnaryInfC{$\tf t \longrightarrow^* \tf t'$}
+\UnaryInfC{$\tm t \lra^* \tm t'$}
 \DisplayProof
 \qquad
-\AxiomC{$\tf t \longrightarrow^* \tf t'$}
-\AxiomC{$\tf t' \longrightarrow^* \tf t''$}
-\BinaryInfC{$\tf t \longrightarrow^* \tf t''$}
+\AxiomC{$\tm t \lra^* \tm t'$}
+\AxiomC{$\tm t' \lra^* \tm t''$}
+\BinaryInfC{$\tm t \lra^* \tm t''$}
 \DisplayProof
 \end{equation*}
 
-\item[3.5.13] To do.
+\item[3.5.13]
+\textsc{E-Funny1} transforms positive conditionals into
+non-deterministic choice.
+Determinacy of one-step evaluation (3.5.4),
+as well as Uniqueness of normal forms (3.5.11),
+fail, since e.g.\ both
+\begin{align*}
+\tm{if true then true else false} &\lra \tm{true},\text{ and} \\
+\tm{if true then true else false} &\lra \tm{false}.
+\end{align*}
+On the other hand, Every value is a normal form (3.5.7),
+If \tm t is a normal form, then \tm t is a value (3.5.8), and
+Termination of evaluation (3.5.12),
+remain valid.
 
-\item[3.5.14] To do.
+\textsc{E-Funny2} makes possible early evaluation of the
+then-branch of a conditional. Determinacy of one-step evaluation
+fails, since e.g.\ both
+\begin{align*}
+\tm{if true then pred succ 0 else 0} &\lra
+\tm{if true then 0 else 0},\text{ and} \\
+\tm{if true then pred succ 0 else 0} &\lra
+\tm{pred succ 0}.
+\end{align*}
+Every value is a normal form (3.5.7),
+If \tm t is a normal form, then \tm t is a value (3.5.8), and
+Termination of evaluation (3.5.12),
+remain valid.
+Uniqueness of normal forms also remains valid,
+but the proof is no longer trivial.
 
-\item[3.5.16] To do.
+Let \tm t be a term, and \tm u and \tm v be normal forms.
+We prove that $\tm t \lra^* \tm u$ and $\tm t \lra^* \tm v$
+implies $\tm u = \tm v$ by induction on \tm t.
+\begin{itemize}
+\item If $\tm t ∊ \{\tm{true}, \tm{false}, \tm 0\}$,
+then clearly $\tm t = \tm u = \tm v$.
+\item If $\tm t = \tm{succ $\tm t_1$}$,
+then each step of the trace
+$\tm t \lra^* \tm u$ ($\tm t \lra^* \tm v$)
+must be derived by \textsc{E-Succ} from
+steps of a corresponding trace
+$\tm t_1 \lra^* \tm u_1$ ($\tm t_1 \lra^* \tm v_1$),
+and $\tm u_1$ ($\tm v_1$) must be a value,
+since $\tm u$ ($\tm v$) is.
+By induction hypothesis $\tm u_1 = \tm v_1$,
+so $\tm u = \tm v$.
+\item If $\tm t = \tm{pred $\tm t_1$}$ the situation is similar,
+except the last step of the trace is either
+\textsc{E-PredZero} or \textsc{E-PredSucc},
+depending on $\tm u_1 = \tm v_1$.
+\item If $\tm t = \tm{iszero $\tm t_1$}$, it is again similar,
+with the last step being either
+\textsc{E-IszeroZero} or \textsc{E-IszeroSucc}
+depending on $\tm u_1 = \tm v_1$.
+\item If $\tm t = \tm{if $\tm t_1$ then $\tm t_2$ else
+$\tm t_3$}$ the situation gets more interesting.
+As a subsequence of the trace
+$\tm t \lra^* \tm u$ ($\tm t \lra^* \tm v$),
+there must exist a trace
+$\tm t_1 \lra^* \tm u_1$ ($\tm t_1 \lra^* \tm v_1$)
+lifted by \textsc{E-If} --
+to which we can apply the induction hypothesis to conclude
+$\tm u_1 = \tm v_1$ --
+followed by either \textsc{E-IfTrue} or \textsc{E-IfFalse}.
+We can divide the first trace into two parts,
+\begin{equation*}
+\tm t \stackrel a{\lra^*}
+\tm t' \stackrel b{\lra^{\phantom *}}
+\tm t'' \stackrel c{\lra^*} \tm u,
+\end{equation*}
+where the $b$ step is this last application of either
+\textsc{E-IfTrue} or \textsc{E-IfFalse},
+and similar for the second trace.
+The steps in $a$ which are not part of the $\tm t_1$-trace must
+be a trace
+\begin{equation*}
+\tm t_2 \stackrel d{\lra^*} \tm t_2'
+\end{equation*}
+lifted by \textsc{E-Funny2}.
+We now proceed by cases:
+\begin{itemize}
+\item If $\tm u_1 = \tm{true}$ then
+\begin{equation*}
+\tm t_2 \stackrel d{\lra^*} \tm t_2' =
+\tm t'' \stackrel c{\lra^*} \tm u
+\end{equation*}
+is a trace,
+and we have a similar one for \tm v,
+to which we may apply the induction hypothesis to conclude
+$\tm u = \tm v$.
+\item If $\tm u_1 = \tm{false}$ then we do the same thing with
+\begin{equation*}
+\tm t_3 = \tm t'' \stackrel c{\lra^*} \tm u.
+\end{equation*}
+\end{itemize}
+\end{itemize}
 
-\item[3.5.17] To do.
+\item[3.5.14] Idea: Since each form of term is matched by the
+conclusion of at most one rule,
+evaluation traces can never fork.
 
-\item[3.5.18] To do.
+\item[3.5.16] Proposition: For all terms \tm t,
+$\tm t \lra^* \tm t'$ for a stuck term $\tm t'$ in the old sense
+if and only if $\tm t \lra^* \tm{wrong}$ in the new sense.
 
+Proof idea: The conclusions of the added rules match exactly the
+forms of terms which are not covered by the old (normal forms),
+but are also not values (stuck terms).
+
+\item[3.5.17] By induction on \tm t:
+\begin{itemize}
+\item If $\tm t ∊ \{\tm{true}, \tm{false}, \tm 0\}$ then
+$\tm t \lra^* \tm t$ and also $\tm t ⇓ \tm t$.
+\item If $\tm t = \tm{succ $\tm t_1$}$ and
+$\tm t_1 \lra^* \tm v_1$ with $\tm v_1$ a numeric value,
+then $\tm t_1 ⇓ \tm v_1$ by induction hypothesis,
+$\tm t \lra^* \tm{succ $\tm v_1$}$ by \textsc{E-Succ},
+and $\tm t ⇓ \tm{succ $\tm v_1$}$ by \textsc{B-Succ}.
+\item If $\tm t = \tm{succ $\tm t_1$}$ and
+$\tm t_1 \not\mkern-7mu\lra^* \tm v_1$ with $\tm v_1$ a numeric
+value,
+then $\tm t_1 \diagup\mkern-17.5mu⇓ \tm v_1$ by induction
+hypothesis,
+so \tm t is stuck in both systems.
+\item If $\tm t = \tm{pred $\tm t_1$}$ and
+$\tm t_1 \lra^* \tm v_1$ with $\tm v_1$ a numeric value,
+then $\tm t_1 ⇓ \tm v_1$ by induction hypothesis.
+Depending on the form of $\tm v_1$ we can apply either
+\textsc{E-PredZero} respectively \textsc{B-PredZero}, or
+\textsc{E-PredSucc} respectively \textsc{B-PredSucc},
+to show $\tm t \lra^* \tm v$ and $\tm t ⇓ \tm v$,
+for \tm v of the appropriate form.
+\item If $\tm t = \tm{if $\tm t_1$ then $\tm t_2$ else
+$\tm t_3$}$ and $\tm t_1 \lra^* \tm{true}$ and
+$\tm t_2 \lra^* \tm v_2$ where $\tm v_2$ is a value,
+then $\tm t_1 ⇓ \tm{true}$ and $\tm t_2 ⇓ \tm v_2$ by induction
+hypotheses,
+$\tm t \lra^* \tm v_2$ by \textsc{E-IfTrue},
+and $\tm t ⇓ \tm v_2$ by \textsc{B-IfTrue}.
+\item The remaining cases are similar.
+\end{itemize}
+
+\item[3.5.18] Dismiss the old rules \textsc{E-If},
+\textsc{E-IfTrue} and \textsc{E-IfFalse} in favour of the
+following new rules:
+\begin{gather}
+\tag{\textsc{E-IfThen}}
+\AxiomC{$\tm t_2 \lra \tm t_2'$}
+\UnaryInfC{$\begin{array}{c}
+\tm{if $\tm t_1$ then $\tm t_2$ else $\tm t_3$} \lra \\
+\tm{if $\tm t_1$ then $\tm t_2'$ else $\tm t_3$}
+\end{array}$}
+\DisplayProof \\
+\tag{\textsc{E-IfElse}}
+\AxiomC{$\tm t_3 \lra \tm t_3'$}
+\UnaryInfC{$\begin{array}{c}
+\tm{if $\tm t_1$ then $\tm v_2$ else $\tm t_3$} \lra \\
+\tm{if $\tm t_1$ then $\tm v_2$ else $\tm t_3'$}
+\end{array}$}
+\DisplayProof \\
+\tag{\textsc{E-IfCond}}
+\AxiomC{$\tm t_1 \lra \tm t_1'$}
+\UnaryInfC{$\begin{array}{c}
+\tm{if $\tm t_1$ then $\tm v_2$ else $\tm v_3$} \lra \\
+\tm{if $\tm t_1'$ then $\tm v_2$ else $\tm v_3$}
+\end{array}$}
+\DisplayProof \\
+\tag{\textsc{E-IfTrue}}
+\AxiomC{$
+\tm{if true then $\tm v_2$ else $\tm v_3$} \lra
+\tm v_2
+$}
+\DisplayProof \\
+\tag{\textsc{E-IfFalse}}
+\AxiomC{$
+\tm{if false then $\tm v_2$ else $\tm v_3$} \lra
+\tm v_3
+$}
+\DisplayProof
+\end{gather}
+\end{itemize}
+\pagebreak
+
+\section*{Chapter 4}
+\begin{itemize}
 \item[4.2.1] Because it prevents tail-call optimization, and
 fills the stack with useless exception handlers; useless, because
 only the innermost one will ever be utilized.
 
-\item[4.2.2] To do.
+A better way to do it is to use an option, either by rewriting
+\verb+eval1+ directly, or by proxying:
+\VerbatimInput{../code/snippets/421a.ml}
+
+Another perhaps less elegant solution is an imperative loop:
+\VerbatimInput{../code/snippets/421b.ml}
+
+\item[4.2.2] \VerbatimInput{../code/snippets/422.ml}
+\end{itemize}
+\pagebreak
+
+\section*{Chapter 5}
+\begin{itemize}
+\item[5.2.1] \VerbatimInput{../code/snippets/521.f}
+\item[5.2.2] \VerbatimInput{../code/snippets/522.f}
+\item[5.2.3] \VerbatimInput{../code/snippets/523.f}
+\item[5.2.4] \VerbatimInput{../code/snippets/524.f}
+\item[5.2.5] \VerbatimInput{../code/snippets/525.f}
+
+\item[5.2.6] This of course depends on the reduction strategy,
+but for a rough estimate we can let the strategy be whatever I
+feel like.
+We assume,
+in contrast to the implementation,
+that nominal definitions are metamathematical constructs.
+Finally, let $⟨\tm f, \tm s⟩$ stand for \tm{λb. b f s}.
+Then we compute:
+\begin{align*}
+\tm{pair f s} &\lra^2 ⟨\tm f, \tm s⟩, \\
+\tm{fst $⟨\tm f, \tm s⟩$} &\lra^4 \tm f, \\
+\tm{snd $⟨\tm f, \tm s⟩$} &\lra^4 \tm s, \\
+\tm{plus $\tm c_m$ $\tm c_n$} &\lra^6 \tm c_{m + n}, \\
+\tm{zz} &\lra^2 ⟨\tm c_0, \tm c_0⟩, \\
+\tm{ss $⟨\tm c_m, \tm c_n⟩$}
+&\lra^1 \tm{pair (snd $⟨\tm c_m, \tm c_n⟩$)
+(plus $\tm c_1$ (snd $⟨c_m, c_n⟩$)} \\
+&\lra^{2 + 4 + 6 + 4} ⟨\tm c_n, \tm c_{n + 1}⟩, \\
+\tm{prd $\tm c_m$}
+&\lra^1 \tm{fst ($\tm c_m$ ss zz)} \\
+&\lra^{2 + 2} \tm{fst ($\tm{ss}^m$ $⟨\tm c_0, \tm c_0⟩$)} \\
+&\lra^{17m} \tm{fst $⟨\tm c_{m - 1}, \tm c_m⟩$} \\
+&\lra^4 \tm c_{m - 1}, \\
+\tm{sub $\tm c_m$ $\tm c_n$}
+&\lra^2 \tm{$\tm c_n$ prd $\tm c_m$} \\
+&\lra^2 \tm{$\tm{prd}^n$ $\tm c_m$} \\
+&\lra^{(17m + 9)n} \tm c_{m - n}.
+\end{align*}
+In conclusion,
+it takes roughly $17mn + 9n + 4$ evaluation steps to subtract
+$n$ from $m$.
+
+(It should be noted, though,
+that with a better encoding \tm{prd $c_m$} can be evaluated in a
+constant number of steps,
+making subtraction linear.
+Thus the awful performance gleaned above is an artifact of that
+particular encoding,
+rather than encodings in general.)
+
+\item[5.2.7] \VerbatimInput{../code/snippets/527.f}
+\item[5.2.8] \VerbatimInput{../code/snippets/528.f}
+
+\item[5.2.9] To do.
+\item[5.2.10] To do.
+
+% \item[5.2.11] Sum is a bad \tm{sum = λl. l plus c0}
+
+\item[5.3.3] By induction on \tm t:
+\begin{itemize}
+\item If $\tm t = \tm x$, then
+$|\textsl{FV}(x)| = 1 = \textsl{size}(x)$.
+\item If $\tm t = λ\tm x.\tm t_1$, then
+$|\textsl{FV}(λ\tm x.\tm t_1)| ≤
+|\textsl{FV}(\tm t_1)|
+≤ \textsl{size}(\tm t_1)
+< \textsl{size}(λ\tm x.\tm t_1)$.
+\item If $\tm t = \tm t_1\tm t_2$, then
+$|\textsl{FV}(\tm t_1\tm t_2)|
+≤ |\textsl{FV}(\tm t_1)| + |\textsl{FV}(\tm t_2)|
+≤ \textsl{size}(\tm t_1) + \textsl{size}(\tm t_2)
+≤ \textsl{size}(\tm t_1\tm t_2)$.
+\end{itemize}
 \end{itemize}
 \end{document}
