@@ -56,14 +56,15 @@ let rec eval1 ctx t = match t with
   | TmProj(fi, t1, l) ->
       let t1' = eval1 ctx t1 in
       TmProj(fi, t1', l)
-  | TmApp(fi,TmAbs(_,x,t12),v2) when isval ctx v2 ->
-      termSubstTop v2 t12
-  | TmApp(fi,v1,t2) when isval ctx v1 ->
-      let t2' = eval1 ctx t2 in
-      TmApp(fi, v1, t2')
   | TmApp(fi,t1,t2) ->
-      let t1' = eval1 ctx t1 in
-      TmApp(fi, t1', t2)
+      begin
+          try TmApp(fi, eval1 ctx t1, t2) with NoRuleApplies ->
+          try TmApp(fi, t1, eval1 ctx t2) with NoRuleApplies ->
+          match t1 with
+              TmAbs(_,_,t12) -> termSubstTop t2 t12
+            | _ -> raise NoRuleApplies
+      end
+  | TmAbs(fi,x,t12) -> TmAbs(fi,x,eval1 (addname ctx x) t12)
   | TmSucc(fi,t1) ->
       let t1' = eval1 ctx t1 in
       TmSucc(fi, t1')
