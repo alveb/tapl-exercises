@@ -15,6 +15,7 @@
 \newunicodechar{⇒}{\Rightarrow}
 \newunicodechar{≤}{\leq}
 \newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{β}{\ensuremath{\beta}}
 \newunicodechar{⟨}{\langle}
 \newunicodechar{⟩}{\rangle}
 \newunicodechar{≠}{\neq}
@@ -406,10 +407,20 @@ rather than encodings in general.)
 \item[5.2.7] \VerbatimInput{../code/snippets/527.f}
 \item[5.2.8] \VerbatimInput{../code/snippets/528.f}
 
-\item[5.2.9] To do.
-\item[5.2.10] To do.
+\item[5.2.9] Because to use test,
+one would need to protect the then and else clauses from
+premature evaluation,
+complicating the presentation.
+Here's what it could look like:
+\VerbatimInput{../code/snippets/529.f}
 
-% \item[5.2.11] Sum is a bad \tm{sum = λl. l plus c0}
+\item[5.2.10] \VerbatimInput{../code/snippets/5210.f}
+
+\item[5.2.11] Sum is not a particularly good example,
+since it is more simply expressed as
+\tm{λl. l plus c0},
+but here goes:
+\VerbatimInput{../code/snippets/5211.f}
 
 \item[5.3.3] By induction on \tm t:
 \begin{itemize}
@@ -426,5 +437,94 @@ $|\textsl{FV}(\tm t_1\tm t_2)|
 ≤ \textsl{size}(\tm t_1) + \textsl{size}(\tm t_2)
 ≤ \textsl{size}(\tm t_1\tm t_2)$.
 \end{itemize}
+
+\item[5.3.6] Let \tm f be a redex-free term,
+i.e.\ one of the form \tm x, \tm{x f} or \tm{λx. f}.
+I assume `lazy' mean call-by-name here.
+\begin{gather}
+\tag{\textsc{Fβ-Abs}}
+\AxiomC{$\tm{(λx. $\tm t_{12}$) $\tm t_2$} \lra
+[\tm x \mapsto \tm t_2]\tm t_{12}$}
+\DisplayProof \\
+\tag{\textsc{Fβ-App1}}
+\AxiomC{$\tm t_1 \lra \tm t_1'$}
+\UnaryInfC{$\tm{$\tm t_1$ $\tm t_2$} \lra
+\tm{$\tm t_1'$ $\tm t_2$}$}
+\DisplayProof \\
+\tag{\textsc{Fβ-App2}}
+\AxiomC{$\tm t_2 \lra \tm t_2'$}
+\UnaryInfC{$\tm{$\tm t_1$ $\tm t_2$} \lra
+\tm{$\tm t_1$ $\tm t_2'$}$}
+\DisplayProof
+\end{gather}
+\begin{gather}
+\tag{\textsc{NO-Abs}}
+\AxiomC{$\tm{(λx. $\tm t_{12}$) $\tm t_2$} \lra
+[\tm x \mapsto \tm t_2]\tm t_{12}$}
+\DisplayProof \\
+\tag{\textsc{NO-App1}}
+\AxiomC{$\tm t_1 \lra \tm t_1'$}
+\UnaryInfC{$\tm{$\tm t_1$ $\tm t_2$} \lra
+\tm{$\tm t_1'$ $\tm t_2$}$}
+\DisplayProof \\
+\tag{\textsc{NO-App2}}
+\AxiomC{$\tm t_2 \lra \tm t_2'$}
+\UnaryInfC{$\tm{$\tm f_1$ $\tm t_2$} \lra
+\tm{$\tm f_1$ $\tm t_2'$}$}
+\DisplayProof
+\end{gather}
+\begin{gather}
+\tag{\textsc{CbN-Abs}}
+\AxiomC{$\tm{(λx. $\tm t_{12}$) $\tm t_2$} \lra
+[\tm x \mapsto \tm t_2]\tm t_{12}$}
+\DisplayProof \\
+\tag{\textsc{CbN-App1}}
+\AxiomC{$\tm t_1 \lra \tm t_1'$}
+\UnaryInfC{$\tm{$\tm t_1$ $\tm t_2$} \lra
+\tm{$\tm t_1'$ $\tm t_2$}$}
+\DisplayProof
+\end{gather}
+
+\item[5.3.7]
+\begin{gather}
+\tag{\textsc{E-Wrong1}}
+\AxiomC{$\tm{x $\tm t_2$} \lra \tm{wrong}$}
+\DisplayProof \\
+\tag{\textsc{E-Wrong2}}
+\AxiomC{$\tm{$\tm t_1$ x} \lra \tm{wrong}$}
+\DisplayProof \\
+\tag{\textsc{E-Wrong3}}
+\AxiomC{$\tm t_1 \lra \tm{wrong}$}
+\UnaryInfC{$\tm{$\tm t_1$ $\tm t_2$} \lra \tm{wrong}$}
+\DisplayProof \\
+\tag{\textsc{E-Wrong4}}
+\AxiomC{$\tm t_2 \lra \tm{wrong}$}
+\UnaryInfC{$\tm{$\tm t_1$ $\tm t_2$} \lra \tm{wrong}$}
+\DisplayProof
+\end{gather}
+
+\item[5.3.8]
+\begin{gather}
+\tag{\textsc{B-Value}}
+\AxiomC{$\tm v ⇓ \tm v$}
+\DisplayProof \\
+\tag{\textsc{B-App}}
+\AxiomC{$\tm t_1 ⇓ \tm{λx. $\tm t_{21}$}$}
+\AxiomC{$\tm t_2 ⇓ \tm v_2$}
+\AxiomC{$[\tm x \mapsto \tm v_2]\tm t_{12} ⇓ \tm v$}
+\TrinaryInfC{$\tm{$\tm t_1$ $\tm t_2$} ⇓ \tm v$}
+\DisplayProof
+\end{gather}
+\pagebreak
+
+\section*{Chapter 6}
+\item[6.1.1]
+\begin{verbatim}
+c0 = λ λ 0;
+c2 = λ λ 1 (1 0);
+plus = λ λ λ λ 3 1 (2 1 0);
+fix = λ (λ 1 (λ 1 1 0)) (λ 1 (λ 1 1 0));
+foo = (λ λ 0) (λ 0);
+\end{verbatim}
 \end{itemize}
 \end{document}
